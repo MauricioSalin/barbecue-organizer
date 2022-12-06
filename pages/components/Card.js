@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { MdPerson, MdAttachMoney } from "react-icons/md";
 
 import Menu from "./Menu";

@@ -23,7 +23,13 @@ import { MdPerson, MdAttachMoney, MdWest, MdOutlineAdd } from "react-icons/md";
 
 import FormParticipant from "./FormParticipant";
 
-function EventCard({ item, onCloseEvent, onAddParticipant }) {
+function EventCard({
+  item,
+  isMobile,
+  onCloseEvent,
+  onAddParticipant,
+  onChangeParticipant,
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const amountPeople = item.participants.length || 0;
@@ -121,6 +127,7 @@ function EventCard({ item, onCloseEvent, onAddParticipant }) {
                         colorScheme="green"
                         size="sm"
                         isChecked={participant.isPaid}
+                        onChange={() => onChangeParticipant(item, participant)}
                       />
                     </Box>
                     <Text>{participant.name}</Text>
@@ -144,7 +151,7 @@ function EventCard({ item, onCloseEvent, onAddParticipant }) {
 
       <style jsx>{`
         .event-card {
-          min-width: 700px;
+          min-width: ${isMobile ? "100%" : "700px"};
           margin-top: -50px;
         }
       `}</style>

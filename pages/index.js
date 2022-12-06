@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import * as Api from "../pages/api";
 
-import { Flex, Image, SimpleGrid } from "@chakra-ui/react";
+import { Flex, Image, SimpleGrid, useMediaQuery } from "@chakra-ui/react";
 
 import Card from "./components/Card";
 import CardAdd from "./components/CardAdd";
@@ -12,6 +12,7 @@ function Home() {
   const [eventOpen, setEventOpen] = useState(false);
   const [event, setEvent] = useState({});
   const [events, setEvents] = useState([]);
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const fetchEvents = async () => {
     const { data } = await Api.getAllEvents();
@@ -86,10 +87,43 @@ function Home() {
     await Api.insertParticipant(eventId, participant);
   };
 
+  const onChangeParticipant = async (item, participant) => {
+    const body = {
+      ...participant,
+      isPaid: !participant.isPaid,
+    };
+
+    setEvents((current) =>
+      current.map((event) => {
+        if (event._id === item._id) {
+          let newParticipants = event.participants.map((el) => {
+            if (el._id === participant._id) {
+              return body;
+            }
+
+            return el;
+          });
+
+          console.log(newParticipants);
+
+          const newEvent = { ...event, participants: newParticipants };
+
+          setEvent(newEvent);
+
+          return newEvent;
+        }
+
+        return event;
+      })
+    );
+
+    await Api.updateParticipant(participant._id, body);
+  };
+
   return (
     <div className="container">
       <section className="hero" role="img" aria-label="Image Description">
-        <h1 className="hero-title">Churrasco dos guri</h1>
+        <h1 className="hero-title">Churrasco dos Guri</h1>
         <Flex justifyContent="center" flexDirection="row">
           <Image
             boxSize="80px"
@@ -112,7 +146,7 @@ function Home() {
 
       {!eventOpen ? (
         <div className="wrapper">
-          <SimpleGrid columns={5} spacing={10}>
+          <SimpleGrid columns={isMobile ? 1 : 4} spacing={10}>
             {events &&
               events.map((item, index) => (
                 <div key={index} className="card">
@@ -131,8 +165,10 @@ function Home() {
         <div className="wrapper-event">
           <EventCard
             item={event}
+            isMobile={isMobile}
             onCloseEvent={onCloseEvent}
             onAddParticipant={onAddParticipant}
+            onChangeParticipant={onChangeParticipant}
           />
         </div>
       )}
@@ -161,11 +197,12 @@ function Home() {
           font-style: normal;
           font-weight: bold;
           color: #eee;
-          font-size: 70px;
+          font-size: ${isMobile ? "50px" : "70px"};
           letter-spacing: 0.03em;
           line-height: 1;
           text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
           margin-bottom: 40px;
+          padding: 0 20px;
         }
 
         .container {
@@ -174,7 +211,7 @@ function Home() {
         }
 
         .wrapper {
-          padding: 50px;
+          padding: ${isMobile ? "50px 15px" : "50px"};
           margin-top: -100px;
         }
 

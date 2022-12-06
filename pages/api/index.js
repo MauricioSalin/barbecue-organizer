@@ -16,5 +16,8 @@ export const deleteEvent = (eventId) =>
 export const insertParticipant = (eventId, data) =>
   axios.post(`${baseURL}/participants/${eventId}/insert-participant`, data);
 
-export const updateParticipant = (participantId) =>
-  axios.delete(`${baseURL}/participants/${participantId}/insert-participant`);
+export const updateParticipant = (participantId, data) =>
+  axios.put(
+    `${baseURL}/participants/${participantId}/update-participant`,
+    data
+  );

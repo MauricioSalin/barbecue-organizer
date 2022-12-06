@@ -4,12 +4,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import {
-  FormErrorMessage,
-  FormLabel,
-  FormControl,
+  Box,
   Input,
   Button,
-  Box,
+  FormLabel,
+  FormControl,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 
 export default function HookForm({ item, onAddParticipant }) {
