@@ -32,7 +32,7 @@ function EventCard({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const amountPeople = item.participants.length || 0;
+  const amountPeople = (item.participants && item.participants.length) || 0;
 
   return (
     <div className="event-card">
@@ -118,33 +118,36 @@ function EventCard({
           <Divider />
 
           <Stack paddingTop="20px" direction="column">
-            {item.participants.map((participant, index) => (
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Box>
-                  <Flex key={index} flexDirection="row">
-                    <Box paddingRight="10px">
-                      <Switch
-                        colorScheme="green"
-                        size="sm"
-                        isChecked={participant.isPaid}
-                        onChange={() => onChangeParticipant(item, participant)}
-                      />
-                    </Box>
-                    <Text>{participant.name}</Text>
-                  </Flex>
-                </Box>
-                <Box>
-                  <Flex
-                    flexDirection="row"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Icon boxSize="1.2em" as={MdAttachMoney} />
-                    <Text>{(item.totalPrice / amountPeople).toFixed(2)}</Text>
-                  </Flex>
-                </Box>
-              </Flex>
-            ))}
+            {item.participants &&
+              item.participants.map((participant, index) => (
+                <Flex key={index} flexDirection="row" justifyContent="space-between">
+                  <Box>
+                    <Flex flexDirection="row">
+                      <Box paddingRight="10px">
+                        <Switch
+                          colorScheme="green"
+                          size="sm"
+                          isChecked={participant.isPaid}
+                          onChange={() =>
+                            onChangeParticipant(item, participant)
+                          }
+                        />
+                      </Box>
+                      <Text>{participant.name}</Text>
+                    </Flex>
+                  </Box>
+                  <Box>
+                    <Flex
+                      flexDirection="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Icon boxSize="1.2em" as={MdAttachMoney} />
+                      <Text>{(item.totalPrice / amountPeople).toFixed(2)}</Text>
+                    </Flex>
+                  </Box>
+                </Flex>
+              ))}
           </Stack>
         </Flex>
       </Box>

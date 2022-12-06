@@ -61,6 +61,8 @@ function Home() {
   };
 
   const onAddParticipant = async (eventId, participant) => {
+    const newParticipant = await Api.insertParticipant(eventId, participant);
+
     const newEvents = events.map((el) => {
       if (el._id === eventId) {
         const newEvent = {
@@ -68,7 +70,7 @@ function Home() {
           participants: [
             ...el.participants,
             {
-              ...participant,
+              ...newParticipant.data,
               isPaid: false,
             },
           ],
@@ -83,8 +85,6 @@ function Home() {
     });
 
     setEvents(newEvents);
-
-    await Api.insertParticipant(eventId, participant);
   };
 
   const onChangeParticipant = async (item, participant) => {

@@ -7,7 +7,7 @@ import Menu from "./Menu";
 
 function Card({ item, handleOpenEvent, onRemoveEvent, onUpdateEvent }) {
   const date = new Date(item.date);
-  const amountPeople = item.participants.length || 0;
+  const amountPeople = (item.participants && item.participants.length) || 0;
 
   return (
     <div className="card">
